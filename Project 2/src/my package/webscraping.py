@@ -90,12 +90,34 @@ class CountryScraper:
 class WebScraper:
     """
     This class is used for scraping tabular data from web pages. It can handle pagination and compiles data from multiple pages into a single pandas DataFrame. The class is generic and can be used for any website that has a similar tabular structure with pagination.
+
+    Attributes:
+        base_url (str): The base URL used for constructing complete URLs.
+n   Methods:
+        __init__(self, base_url: str): Initializes the DataFetcher instance with a base URL.
+        _fetch_url(self, url: str) -> str: Fetches data from the provided URL and returns the response text.
+    
     """
 
     def __init__(self, base_url: str):
+        """
+        Initializes the DataFetcher instance with a base URL.
+
+        Parameters:
+            base_url (str): The base URL used for constructing complete URLs.
+        """
         self.base_url = base_url
 
     def _fetch_url(self, url: str) -> str:
+        """
+        Fetches data from the provided URL and returns the response text.
+
+        Parameters:
+            url (str): The complete URL for data retrieval.
+
+        Returns:
+            str: The response text if successful, an empty string otherwise.
+        """
         try:
             with requests.get(url) as response:
                 response.raise_for_status()
@@ -108,6 +130,16 @@ class WebScraper:
             return ""
 
     def _extract_pagination_links(self, content: str) -> list[str]:
+        """
+    Extracts pagination links from HTML content.
+
+    Parameters:
+        content (str): The HTML content containing pagination links.
+
+    Returns:
+        list[str]: A list of complete pagination URLs based on the base URL.
+                   An empty list is returned if no pagination links are found.
+    """
         soup = BeautifulSoup(content, "html.parser")
         pagination_div = soup.find("div", class_="pagination")
         if not pagination_div:
@@ -120,6 +152,17 @@ class WebScraper:
         ]
 
     def _extract_table_data(self, content: str) -> pd.DataFrame:
+
+         """
+    Extracts tabular data from HTML content and returns it as a Pandas DataFrame.
+
+    Parameters:
+        content (str): The HTML content containing the table data.
+
+    Returns:
+        pd.DataFrame: A DataFrame representing the tabular data. 
+                      If no table is found, an empty DataFrame is returned.
+    """
         soup = BeautifulSoup(content, "html.parser")
         table = soup.find("table")
         if table is None:
