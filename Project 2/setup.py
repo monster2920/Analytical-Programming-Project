@@ -6,9 +6,7 @@ setup(
     author="Sandeep Varma Uppalapati",  
     author_email="u.s.varma2920@gmail.com",  
     description="A package for extracting and analyzing web data",  
-    long_description=open(
-        "README.md"
-    ).read(),  # description from the readme file
+
     long_description_content_type="text/markdown",
     url="https://github.com/monster2920/Analytical-Programming-Project/tree/main/Project%202",  
     packages=find_packages(),
